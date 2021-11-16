@@ -154,14 +154,14 @@
 
       <div>
         
-        <p>Often I need to extract the protein sequence from a PDB structure. At first glance this may seem like a very straight forward task. But there are several pitfalls we need to be aware of.</p>
+        <p>Often, I need to extract the protein sequence from a PDB structure. At first glance this may seem like a very straight forward task. But there are several pitfalls we need to be aware of.</p>
 <h3 id="extracting-the-residues-from-the-atomic-data-yields-unnatural-sequences">
   Extracting the residues from the atomic data yields unnatural sequences
   <a class="heading-link" href="#extracting-the-residues-from-the-atomic-data-yields-unnatural-sequences">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h3>
-<p>Your first thought, as was mine when I first started in this field, may be to simply extract the residues from the atomic data. The issue is this will yeild unnatural sequences due to unmodeled (disordered) regions in the structure:</p>
+<p>Your first thought, as was mine when I first started in this field, may be to simply extract the residues from the atomic data. The issue is this will yield unnatural sequences due to unmodeled (disordered) regions in the structure:</p>
 <p>Take for example PDBID: 2GNK</p>
   <script src="/ngl.js"></script>
   <script>
@@ -218,8 +218,8 @@
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h6>
-<p>The region in green is a disordered unmodeled region (NOTE: disordered and unmodeled do exactly mean the same thing but it is often the case that an disordered region is unsolved/unmodeled). Thus, because it is unsolved there are no atomic cordinates present for this region. If we were to extract the residues from the cordinate data it would skip this region because it is not represented in the atomic data.</p>
-<p>For example notice that in the <a href="https://files.rcsb.org/view/2GNK.pdb">PDB file</a> it jumps from residue 37 to 55.</p>
+<p>The region in green is a disordered unmodeled region (NOTE: disordered and unmodeled do exactly mean the same thing but it is often the case that a disordered region is unsolved/unmodeled). Thus, because it is unsolved there are no atomic coordinates present for this region. If we were to extract the residues from the coordinate data, it would skip this region because it is not represented in the atomic data.</p>
+<p>For example, notice that in the <a href="https://files.rcsb.org/view/2GNK.pdb">PDB file</a> it jumps from residue 37 to 55.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">...
 ATOM    274  N   GLY A  37     -15.075  39.805   6.661  1.00 44.73           N  
 ATOM    275  CA  GLY A  37     -16.284  39.652   5.872  1.00 48.53           C  
@@ -231,24 +231,24 @@ ATOM    280  C   PHE A  55     -12.714  39.735  12.211  1.00 43.54           C
 ATOM    281  O   PHE A  55     -12.850  39.879  13.442  1.00 47.11           O  
 ATOM    282  CB  PHE A  55     -11.171  41.606  11.629  1.00 44.34           C  
 ...
-</code></pre></div><p>Therefore, while the true expressed sequence of the structure would look like this (truncated to +- 5 residues around disordered region for explanitary purposes)</p>
+</code></pre></div><p>Therefore, while the true expressed sequence of the structure would look like this (truncated to +/- 5 residues around disordered region for explanatory purposes)</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">34   VKGFGRQKGNAELYRGAEYSVNFLPKV   59
-</code></pre></div><p>While your extraced sequence would look like this</p>
+</code></pre></div><p>While your extracted sequence would look like this</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">34   VKGFG*****************FLPKV   59
-</code></pre></div><p>If you are simply using the extraced sequence to map a structural representative to an alignment, this may not be such a problem as you dont have structural data for that region in the first place, and you could let the alignment algorithm &ldquo;figure it out&rdquo; and add gaps to that region (albiet this is not a good practice).</p>
-<p>But if you instead intend to use the extreacted sequence as input to some predicitor, the missing region becomes a significant issue as most predictors rely on the context around a residue. Feeding a predictior the sequence VKGFGFLPKV will generate inaacurate results as it nolonger has the context of the residues of the unmolded disordered region that does actually exist in the true sequence.</p>
+</code></pre></div><p>If you are simply using the extracted sequence to map a structural representative to an alignment, this may not be such a problem as you don’t have structural data for that region in the first place, and you could let the alignment algorithm “figure it out” and add gaps to that region (albeit this is not a good practice).</p>
+<p>But if you instead intend to use the extracted sequence as input to some predictor, the missing region becomes a significant issue as most predictors rely on the context around a residue. Feeding a predictor the sequence VKGFGFLPKV will generate inaccurate results as it no longer has the context of the residues of the unmolded disordered region that actually exist in the true sequence.</p>
 <h3 id="seqres-does-not-need-to-match-the-atom-records">
   SEQRES does not need to match the ATOM records
   <a class="heading-link" href="#seqres-does-not-need-to-match-the-atom-records">
     <i class="fa fa-link" aria-hidden="true"></i>
   </a>
 </h3>
-<p>Okay, so extracting the residues from the the cordinate data has its probems. What about the seqres header or provided fasta file from the PDB website.</p>
-<p>The SEQRES header is supposed to contain the &ldquo;primary&rdquo; sequence used in the experiemnt. The actual expressed protein is derived from the &ldquo;primary&rdquo; sequence. This means that the solved protein can be a fragment, extended or mutated version of the &ldquo;primary&rdquo; sequence.</p>
-<p>Number 6 atomic in will not equal residue number 6 in seqres example 5TFR</p>
+<p>Okay, so extracting the residues from the coordinate data has its problems. What about the SEQRES header or provided fasta file from the PDB website.</p>
+<p>The SEQRES header is supposed to contain the “primary” sequence used in the experiment. The actual expressed protein is derived from the “primary” sequence. This means that the solved protein can be a fragment, extended or mutated version of the “primary” sequence.</p>
+<p>Number 6 atomic in will not equal residue number 6 in SEQRES example 5TFR.</p>
 <p>Often the terminal regions of a protein will be disordered (unmodeled).</p>
  <!-- This is useful because you may build an alignment inlcluding the seqeuence of the PDB structure, and then you can use that structure as a structural representative for sites in the alignments. -->
-<p>Extracting the sequence that composes a PDB structure is not so simple though. The SEQRES header does not correpond 1:1 to the residues in the structure. You can extract the amino acids that build up the structure but now you may be left with a sequence that is missing regions because they were not solved (disordered) in the structure. If you are only extracted the sequence for use as a structural represnetative in an alignment, this may not be such a problem as ushally the alignment algorithum will &ldquo;figure it out&rdquo; and add gaps in those missing regions. But if you intend to use the extreacted sequence to benchmark predictors, the missing regions may be an issue, because the extracted sequence does not represent a true biological seuqence due to the missing regions.</p>
+<p>Extracting the sequence that composes a PDB structure is not so simple though. The SEQRES header does not correspond 1:1 to the residues in the structure. You can extract the amino acids that build up the structure but now you may be left with a sequence that is missing regions because they were not solved (disordered) in the structure. If you are only extracted the sequence for use as a structural representative in an alignment, this may not be such a problem as usually the alignment algorithm will “figure it out” and add gaps in those missing regions. But if you intend to use the extracted sequence to benchmark predictors, the missing regions may be an issue, because the extracted sequence does not represent a true biological sequence due to the missing regions.</p>
 
       </div>
 

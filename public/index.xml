@@ -13,7 +13,7 @@
       <pubDate>Tue, 05 Mar 2019 00:00:00 +0000</pubDate>
       
       <guid>http://www.example.com/posts/first_post/</guid>
-      <description>Often I need to extract the protein sequence from a PDB structure. At first glance this may seem like a very straight forward task. But there are several pitfalls we need to be aware of.
+      <description>Often, I need to extract the protein sequence from a PDB structure. At first glance this may seem like a very straight forward task. But there are several pitfalls we need to be aware of.
 Extracting the residues from the atomic data yields unnatural sequences    Your first thought, as was mine when I first started in this field, may be to simply extract the residues from the atomic data.</description>
     </item>
     
