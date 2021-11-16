@@ -1,0 +1,80 @@
+baseurl = "http://www.example.com"
+title = "Christian Balbin"
+theme = "hugo-coder"
+languagecode = "en"
+defaultcontentlanguage = "en"
+
+paginate = 20
+
+
+
+[params]
+  author = "Christian Balbin"
+  info = "Computational Biologist"
+  description = "Christian Balbin's Blog | Articles on a variety of topics that I hope you find interesting."
+  keywords = "blog,developer,electronics,pcb,printed circuit board,kicad,ws2811,ws2812,python,programming,machine learning,neural networks,data science,biology,bioinformatics, computational biology, structural biology"
+  #avatarurl = "images/avatar.jpg"
+  #gravatar = "john.doe@example.com"
+
+
+
+  footercontent = "Enter a text here."
+  hideFooter = true
+  hideCredits = true
+  hideCopyright = true
+  since = 2019
+
+
+
+  colorScheme = "auto"
+  hidecolorschemetoggle = false
+
+
+
+[taxonomies]
+  category = "categories"
+  series = "series"
+  tag = "tags"
+  author = "authors"
+
+
+# Menu links
+[[menu.main]]
+  name = "Blog"
+  weight = 1
+  url  = "posts/"
+[[menu.main]]
+  name = "Tags"
+  weight = 2
+  url  = "tags/"
+[[menu.main]]
+  name = "About"
+  weight = 3
+  url = "about/"
+
+
+
+[privacy]
+  [privacy.disqus]
+    disable = true
+
+  [privacy.googleAnalytics]
+    disable = true
+
+  [privacy.instagram]
+    disable = true
+
+  [privacy.twitter]
+    disable = true
+
+  [privacy.vimeo]
+    disable = true
+
+  [privacy.youtube]
+    disable = true
+
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
