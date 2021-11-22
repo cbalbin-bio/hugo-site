@@ -105,11 +105,57 @@ Okay, so extracting the residues from the coordinate data has its problems. What
 
 The SEQRES header is supposed to contain the “primary” sequence used in the experiment. The actual expressed protein is derived from the “primary” sequence. This means that the solved protein can be a fragment, extended or mutated version of the “primary” sequence.
 
-Number 6 atomic in will not equal residue number 6 in SEQRES example 5TFR.
+But there is no gurantee that the Nth residue in the SEQRES header corresponds to the Nth residue in the cordinate data.
+For example, the 6th residue in 5TFR's SEQRES HEADER is a glycine but the 6 residue in the atom data is a glutamate.
 
-Often the terminal regions of a protein will be disordered (unmodeled).
+
+
+### _pdbx_poly_seq_scheme in mmCIF files contains a residue level mapping between the primary sequence and the cordinate data
+
+```text
+...
+loop_
+_pdbx_poly_seq_scheme.asym_id 
+_pdbx_poly_seq_scheme.entity_id 
+_pdbx_poly_seq_scheme.seq_id 
+_pdbx_poly_seq_scheme.mon_id 
+_pdbx_poly_seq_scheme.ndb_seq_num 
+_pdbx_poly_seq_scheme.pdb_seq_num 
+_pdbx_poly_seq_scheme.auth_seq_num 
+_pdbx_poly_seq_scheme.pdb_mon_id 
+_pdbx_poly_seq_scheme.auth_mon_id 
+_pdbx_poly_seq_scheme.pdb_strand_id 
+_pdbx_poly_seq_scheme.pdb_ins_code 
+_pdbx_poly_seq_scheme.hetero 
+A 1 1   GLY 1   -3  ?   ?   ?   A . n 
+A 1 2   SER 2   -2  ?   ?   ?   A . n 
+A 1 3   HIS 3   -1  ?   ?   ?   A . n 
+A 1 4   MET 4   0   ?   ?   ?   A . n 
+A 1 5   GLY 5   1   ?   ?   ?   A . n 
+A 1 6   GLY 6   2   ?   ?   ?   A . n 
+A 1 7   GLY 7   3   ?   ?   ?   A . n 
+A 1 8   THR 8   4   ?   ?   ?   A . n 
+A 1 9   GLY 9   5   ?   ?   ?   A . n 
+A 1 10  GLU 10  6   6   GLU GLU A . n 
+A 1 11  THR 11  7   7   THR THR A . n 
+A 1 12  LEU 12  8   8   LEU LEU A . n 
+A 1 13  GLY 13  9   9   GLY GLY A . n 
+...
+```
+
+
+This secttion of a mmCIF file contains a mapping between the primary sequence and the cordinate data. Another useful piece of data with can extract from this is a mapping between the author chains codes and those assigned by PDB.
+
+- asym_id represents the chain code as assigned by PDB
+- mon_id represents the SEQRES (primary) sequence
+- auth_seq_num represents the residue number as labeled in the cordinate data (with missing residues represented as a "?" )
+- pdb_mon_id represents the corresponding residue in the cordinate data
+- pdb_strand_id represents the chain code as assigned by the author
+- pdb_ins_code represents the insertion code (This is sometimes used to preserve the sequence numbering when an insertion is present in the cordinate data but not the primary sequence)
+
+With this mapping, you can now use the full primary sequence of protein structures but maintain a mapping back to the cordinate data. This is important as it allows us to maintain the full context sequence represented by a given protein structure.
 
  <!-- This is useful because you may build an alignment inlcluding the seqeuence of the PDB structure, and then you can use that structure as a structural representative for sites in the alignments. -->
 
 
-Extracting the sequence that composes a PDB structure is not so simple though. The SEQRES header does not correspond 1:1 to the residues in the structure. You can extract the amino acids that build up the structure but now you may be left with a sequence that is missing regions because they were not solved (disordered) in the structure. If you are only extracted the sequence for use as a structural representative in an alignment, this may not be such a problem as usually the alignment algorithm will “figure it out” and add gaps in those missing regions. But if you intend to use the extracted sequence to benchmark predictors, the missing regions may be an issue, because the extracted sequence does not represent a true biological sequence due to the missing regions.
+<!-- Extracting the sequence that composes a PDB structure is not so simple though. The SEQRES header does not correspond 1:1 to the residues in the structure. You can extract the amino acids that build up the structure but now you may be left with a sequence that is missing regions because they were not solved (disordered) in the structure. If you are only extracted the sequence for use as a structural representative in an alignment, this may not be such a problem as usually the alignment algorithm will “figure it out” and add gaps in those missing regions. But if you intend to use the extracted sequence to benchmark predictors, the missing regions may be an issue, because the extracted sequence does not represent a true biological sequence due to the missing regions. -->
